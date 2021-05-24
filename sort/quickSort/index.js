@@ -2,40 +2,48 @@ function getTagIndex(num) {
     return Math.floor(Math.random() * num);
 };
 function quick_sork(arr) {
-    let tagIndex = getTagIndex(arr.length);
-    sort(arr, tagIndex, 0, arr.length);
+    // debugger
+    sort(arr, 0, arr.length);
 }
 
-function sort(arr, tagIndex, lIndex, rIndex) {
-    if (rIndex - lIndex < 1) {
+function sort(arr, lIndex, rIndex) {
+    let tagIndex = getTagIndex((lIndex + rIndex) / 2);
+    if (rIndex - lIndex <= 1) {
         return;
     }
     let tagValue = arr[tagIndex];
-    for (let i = lIndex, j = rIndex - 1;; i++, j--) {
-        if (i !== tagIndex) {
+    for (let i = lIndex, j = rIndex - 1; ;) {
+        if (i < tagIndex) {
             let leftValue = arr[i];
             if (leftValue > tagValue) {
                 swap(arr, i, tagIndex);
+                tagIndex = i;
+                i++;
+            } else {
+                i++;
+                continue;
             }
-            tagIndex = i;
         }
 
-        if (j !== tagIndex) {
+        if (j > tagIndex) {
             let rightValue = arr[j];
             if (rightValue < tagValue) {
                 swap(arr, tagIndex, j);
+                tagIndex = j;
+                j--;
+            } else {
+                j--;
+                continue;
             }
-
-            tagIndex = j;
         }
 
-        if (j <= tagIndex && i >= tagIndex ) {
+        if (j <= tagIndex && i >= tagIndex || (i >= rIndex && j <= lIndex)) {
             break;
         }
     }
 
-    sort(arr, getTagIndex((lIndex + tagIndex) / 2), lIndex, tagIndex);
-    sort(arr, getTagIndex((rIndex + tagIndex) / 2), tagIndex, rIndex);
+    sort(arr, lIndex, tagIndex);
+    sort(arr, tagIndex + 1, rIndex);
 }
 
 function swap(arr, leftIndex, rightIndex) {
