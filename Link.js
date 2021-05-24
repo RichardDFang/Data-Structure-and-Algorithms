@@ -1,16 +1,20 @@
+const Node = require('./Node');
+
 class Link {
     constructor() {
-        this.node = {
-            index: null,
-            next: null,
-            size: 0
-        };
+        this.head = new Node();
+        this.head.pos = 0;
     }
-    insert(index, data) {
-        while(this.node.index && this.node.index >= 0) {
-            
+    insert(pos, value) {
+        let item = new Node(value);
+        if (this.head.value) {
+            item.next = this.head.next;
+            this.head.next = item;
         }
+        this.head = item;
     }
+    remove(value) {}
+    modify(value) {}
 }
 
 export default Link;
